@@ -1,0 +1,12 @@
+h1 {
+    color: red;
+}
+
+#gameBoard {
+    display: grid;
+    grid-template: 100px 100px 100px / 100px 100px 100px;
+}
+
+#gameBoard div {
+    border: 1px red solid;
+}
