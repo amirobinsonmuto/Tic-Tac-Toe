@@ -26,21 +26,28 @@ const controller = (() => {
     let _playerA = playerFactory('A'); 
     let _playerB = playerFactory ('B'); 
     let _player = _playerA;
+    let cells = document.querySelectorAll('.cell');
+    let id;
+    let announcement = document.getElementById('announcement');
 
     function _togglePlayer () {
         (_player == _playerA)? _player = _playerB : _player = _playerA;
     }
 
     function putSymbol () {
-        let cells = document.querySelectorAll('.cell');
-        let id;
+
         cells.forEach((cell) => {
             cell.addEventListener('click', (e) => {
+
                 id = e.target.getAttribute('id');
                 gameBoard.gameBoardArr[id] = _player.symbol;
                 console.log(gameBoard.gameBoardArr);
                 e.target.textContent = gameBoard.gameBoardArr[id];
                 _togglePlayer();
+
+                if (gameBoard.gameBoardArr.includes(null) == false) {
+                    announcement.textContent = 'gameover';
+                }
             })
         })
     }
