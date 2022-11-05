@@ -1,4 +1,4 @@
-//gameBoard module to create a gameBoardArr function
+//gameBoard module
 const gameBoard = (() => {
     let arr = [null, null, null, null, null, null, null, null, null];
     //return an object
@@ -18,10 +18,10 @@ const playerFactory = (name, x) => {
     }
 }
 
-//controller object module with several methods stored in it
+//controller object module
 const controller = (() => {
 
-    //Get elements
+    //get elements
     const _playBtn = document.getElementById('playBtn');
     const _cells = document.querySelectorAll('.cell');
     const _announcement = document.getElementById('announcement');
@@ -34,18 +34,24 @@ const controller = (() => {
     let _playerB;
     let _index;
     let _currentPlayer;
-    const _winCombinations = [
-                [0,1,2],
-                [3,4,5],
-                [6,7,8],
-                [0,3,6],
-                [1,4,7],
-                [2,5,8],
-                [0,4,8],
-                [2,4,6]
-            ]
+    let _playerAName;
+    let _playerBName;
 
     //private functions
+
+    //function to get input values. Use default values if fields are left blank.
+    function _getName() {
+        (document.getElementById('playerA').value == '')? 
+            _playerAName = 'First player': 
+            _playerAName = document.getElementById('playerA').value;
+
+        (document.getElementById('playerB').value == '')? 
+            _playerBName = 'Second player': 
+            _playerBName = document.getElementById('playerB').value;
+
+    }
+
+    //make the cells unable to click and announce the winner.
     function _winPlayer() {
         _cells.forEach((cell) => {
             cell.style.pointerEvents = 'none';
@@ -53,19 +59,33 @@ const controller = (() => {
         _announcement.textContent = `${_currentPlayer.playerName} wins`;
     }
     
+    //togglePlayer from A to B (or B to A). Announce who's turn.
     function _togglePlayer () {
         (_currentPlayer == _playerA)? _currentPlayer = _playerB : _currentPlayer = _playerA;
         _announcement.textContent = 
         `${_currentPlayer.playerName}'s turn (Symbol: ${_currentPlayer.symbol})`
     }
 
+    //if all cells are taken, announce tie.
     function _checkTie () {
         if (gameBoard.arr.includes(null) == false) {
             _announcement.textContent = 'Tie!';
         }
     }
 
+    //check if winning combinations are filled with one symbol.
     function _checkWinner () {
+        const _winCombinations = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+        ]
+
         if(_winCombinations.filter((_winCombination) => _winCombination.includes(_index))
                         .some((possibleCombination) => 
                             possibleCombination.every((index) => 
@@ -78,11 +98,12 @@ const controller = (() => {
 
 
     //public functions
+
+    //function to start a game. Hide the name form and display the grid.
     function startGame() {
         _playBtn.addEventListener('click', () => {
-            //get input name values
-            const _playerAName = document.getElementById('playerA').value;
-            const _playerBName = document.getElementById('playerB').value;
+
+            _getName();
 
             //create objects
             _playerA = playerFactory(_playerAName, 'X');
@@ -97,6 +118,7 @@ const controller = (() => {
         })
     }
 
+    //function to invoke when a cell is clicked.
     function gameLoop() {
         _cells.forEach((cell) => {
             cell.addEventListener('click', (e) => {
@@ -112,6 +134,7 @@ const controller = (() => {
         })
     }
 
+    //function to refresh a game when the refreshBtn is clicked.
     function refreshGame() {
         _refreshBtn.addEventListener('click', () => {
             gameBoard.arr = [null, null, null, null, null, null, null, null, null];
