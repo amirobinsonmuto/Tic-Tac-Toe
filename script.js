@@ -2,10 +2,10 @@
 const gameBoard = (() => {
     let arr = [null, null, null, null, null, null, null, null, null];
     //return an object
-    return { 
+    return {
         arr
     };
-})(); 
+})();
 
 //Player object factory
 const playerFactory = (name, x) => {
@@ -21,7 +21,7 @@ const playerFactory = (name, x) => {
 //controller object module with several methods stored in it
 const controller = (() => {
 
-    //Get elements and declare variables
+    //Get elements
     const _playBtn = document.getElementById('playBtn');
     const _cells = document.querySelectorAll('.cell');
     const _announcement = document.getElementById('announcement');
@@ -29,117 +29,42 @@ const controller = (() => {
     const _form = document.getElementById('form');
     const _refreshBtn = document.getElementById('refreshBtn');
 
+    //private variables
     let _playerA;
-    let _playerB; 
-    let _id;    
+    let _playerB;
+    let _index;
     let _currentPlayer;
+    const _winCombinations = [
+                [0,1,2],
+                [3,4,5],
+                [6,7,8],
+                [0,3,6],
+                [1,4,7],
+                [2,5,8],
+                [0,4,8],
+                [2,4,6]
+            ]
 
     //private functions
     function _togglePlayer () {
         (_currentPlayer == _playerA)? _currentPlayer = _playerB : _currentPlayer = _playerA;
         _announcement.textContent = `${_currentPlayer.playerName}'s turn (Symbol: ${_currentPlayer.symbol})`
     }
-    
+
     function _checkTie () {
         if (gameBoard.arr.includes(null) == false) {
             _announcement.textContent = 'Tie!';
-        } 
+        }
     }
-    
-    function _winPlayerA () {
-        _announcement.textContent = `${_playerA.playerName} wins`;
-        console.log(_playerA.playerName);
-        _cells.forEach((cell) => {                
-            cell.style.pointerEvents = 'none';
-        })
-    }
-    
-    function _winPlayerB () {
-        _announcement.textContent = `${_playerB.playerName} wins`;
-        _cells.forEach((cell) => {                
-            cell.style.pointerEvents = 'none';
-        })
-    }
-    
-    //TO IMPROVE THIS SECTION LATER
-    function _checkWinner () {
-        //horizontal
-        if ((gameBoard.arr[0] == gameBoard.arr[1]) &&
-            (gameBoard.arr[0] == gameBoard.arr[2])) {
-                if (gameBoard.arr[0] == _playerA.symbol) {
-                    _winPlayerA();
-                } else if (gameBoard.arr[0] == _playerB.symbol) {
-                    _winPlayerB();
-                }
-            }
-            
-        if ((gameBoard.arr[3] == gameBoard.arr[4]) &&
-        (gameBoard.arr[3] == gameBoard.arr[5])) {
-            if (gameBoard.arr[3] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[3] == _playerB.symbol) {
-                _winPlayerB();
-            }
-        }
-        
-        if ((gameBoard.arr[6] == gameBoard.arr[7]) &&
-        (gameBoard.arr[6] == gameBoard.arr[8])) {
-            if (gameBoard.arr[6] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[6] == _playerB.symbol) {
-                _winPlayerB();
-            }
-        }
-        
-        //vertical
-        if ((gameBoard.arr[0] == gameBoard.arr[3]) &&
-        (gameBoard.arr[0] == gameBoard.arr[6])) {
-            if (gameBoard.arr[0] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[0] == _playerB.symbol) {
-                _winPlayerB();
-            }
-        }
-        
-        if ((gameBoard.arr[1] == gameBoard.arr[4]) &&
-        (gameBoard.arr[1] == gameBoard.arr[7])) {
-            if (gameBoard.arr[1] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[1] == _playerB.symbol) {
-                _winPlayerB();
-                }
-        }
 
-        if ((gameBoard.arr[2] == gameBoard.arr[5]) &&
-        (gameBoard.arr[2] == gameBoard.arr[8])) {
-            if (gameBoard.arr[2] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[2] == _playerB.symbol) {
-                _winPlayerB();
-            }
-        }
-        
-        //diagonal
-        if ((gameBoard.arr[0] == gameBoard.arr[4]) &&
-        (gameBoard.arr[0] == gameBoard.arr[8])) {
-            if (gameBoard.arr[0] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[0] == _playerB.symbol) {
-                _winPlayerB();
-            }
-        }
-        
-        if ((gameBoard.arr[2] == gameBoard.arr[4]) &&
-        (gameBoard.arr[2] == gameBoard.arr[6])) {
-            if (gameBoard.arr[2] == _playerA.symbol) {
-                _winPlayerA();
-            } else if (gameBoard.arr[2] == _playerB.symbol) {
-                _winPlayerB();
-            }
-        }
-        
+    function _winPlayer() {
+        _cells.forEach((cell) => {
+            cell.style.pointerEvents = 'none';
+        })
+        _announcement.textContent = `${_currentPlayer.playerName} wins`;
     }
-    
+
+
     //public functions
 
     function startGame() {
@@ -147,9 +72,9 @@ const controller = (() => {
             //get input name values
             const _playerAName = document.getElementById('playerA').value;
             const _playerBName = document.getElementById('playerB').value;
- 
+
             //create objects
-            _playerA = playerFactory(_playerAName, 'X'); 
+            _playerA = playerFactory(_playerAName, 'X');
             _playerB = playerFactory (_playerBName, 'O');
             _currentPlayer = _playerA;
             _announcement.textContent = `${_playerA.playerName}'s turn (Symbol: ${_playerA.symbol})`
@@ -162,14 +87,22 @@ const controller = (() => {
 
     function gameLoop() {
         _cells.forEach((cell) => {
-            cell.addEventListener('click', (e) => {  
-                _id = e.target.getAttribute('id');
-                gameBoard.arr[_id] = _currentPlayer.symbol;
-                e.target.textContent = gameBoard.arr[_id];
+            cell.addEventListener('click', (e) => {
+                _index = parseInt(e.target.getAttribute('id'));
+                gameBoard.arr[_index] = _currentPlayer.symbol;
+                e.target.textContent = gameBoard.arr[_index];
                 e.target.style.pointerEvents = 'none';
-                _togglePlayer();
+
                 _checkTie();
-                _checkWinner();   
+
+                if(_winCombinations.filter((_winCombination) => _winCombination.includes(_index))
+                        .some((possibleCombination) => 
+                            possibleCombination.every((index) => gameBoard.arr[index] == _currentPlayer.symbol))) {
+                    _winPlayer();
+                } else {
+                    _togglePlayer();
+                }
+
             })
         })
     }
@@ -185,7 +118,7 @@ const controller = (() => {
             _form.classList.remove('d-none');
         })
     }
-    
+
     return {
         startGame,
         gameLoop,
