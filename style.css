@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;700&family=Varela+Round&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@100;200;400;700&display=swap');
 
 /*custom properties*/
 :root {
@@ -10,11 +10,17 @@
 
   }
 
+  *,
+  *::after,
+  *::before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
 body {
-    font-family: 'Inter', sans-serif;
-    font-family: 'Varela Round', sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    font-family: 'Fredoka One', cursive, sans-serif !important;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -23,13 +29,23 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 10%;
+    min-height: 10%;
     background-color: var(--verylightpink);
+    padding: 1rem;
 }
 
 main {
     flex: 1;
     background-color: var(--lightpink);
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 10%;
+    background-color: var(--verylightpink);
+    padding: 1rem;
 }
 
 .container, #hide, #form {
@@ -40,10 +56,15 @@ main {
 
 h1 {
     color: var(--pink);
+    margin-bottom: 0 !important;
 }
 
 h2, label {
     color: var(--green);
+}
+
+p {
+    margin-bottom: 0 !important;
 }
 
 .button {
@@ -73,10 +94,6 @@ h2, label {
     grid-template: 150px 150px 150px / 150px 150px 150px;
 }
 
-.disable {
-    pointer-events: none;
-}
-
 #gameBoard div {
     font-size: 100px;
     display: flex;
@@ -85,6 +102,10 @@ h2, label {
     cursor: pointer;
     color: var(--pink);
 }
+
+#gameBoard div:hover {
+    background-color: var(--verylightpink);
+  }
 
 .all {
     border: 4px var(--green) solid;
@@ -106,3 +127,5 @@ h2, label {
     border-left: 4px var(--green) solid;
     border-bottom: 4px var(--green) solid;
 }
+
+

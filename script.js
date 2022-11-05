@@ -50,17 +50,18 @@ const controller = (() => {
         _announcement.textContent = `${_playerA.playerName} wins`;
         console.log(_playerA.playerName);
         _cells.forEach((cell) => {                
-            cell.classList.add('disable');
+            cell.style.pointerEvents = 'none';
         })
     }
     
     function _winPlayerB () {
         _announcement.textContent = `${_playerB.playerName} wins`;
         _cells.forEach((cell) => {                
-            cell.classList.add('disable');
+            cell.style.pointerEvents = 'none';
         })
     }
     
+    //TO IMPROVE THIS SECTION LATER
     function _checkWinner () {
         //horizontal
         if ((gameBoard.arr[0] == gameBoard.arr[1]) &&
@@ -147,11 +148,13 @@ const controller = (() => {
             const _playerAName = document.getElementById('playerA').value;
             const _playerBName = document.getElementById('playerB').value;
  
+            //create objects
             _playerA = playerFactory(_playerAName, 'X'); 
             _playerB = playerFactory (_playerBName, 'O');
             _currentPlayer = _playerA;
             _announcement.textContent = `${_playerA.playerName}'s turn (Symbol: ${_playerA.symbol})`
 
+            //display the grid
             _hide.classList.remove('d-none');
             _form.classList.add('d-none');
         })
@@ -163,7 +166,7 @@ const controller = (() => {
                 _id = e.target.getAttribute('id');
                 gameBoard.arr[_id] = _currentPlayer.symbol;
                 e.target.textContent = gameBoard.arr[_id];
-                e.target.classList.add('disable');
+                e.target.style.pointerEvents = 'none';
                 _togglePlayer();
                 _checkTie();
                 _checkWinner();   
@@ -173,21 +176,22 @@ const controller = (() => {
 
     function refreshGame() {
         _refreshBtn.addEventListener('click', () => {
-            gameBoard.arr.map((element) => {
-                element = null;
-            })
+            gameBoard.arr = [null, null, null, null, null, null, null, null, null];
             _cells.forEach((cell) => {
                 cell.textContent = null;
-                cell.classList.remove('disable');
+                cell.style.pointerEvents = 'auto';
             })
+            _hide.classList.add('d-none');
+            _form.classList.remove('d-none');
         })
     }
     
     return {
-        gameLoop,
         startGame,
+        gameLoop,
         refreshGame
     }
+
 })();
 
 controller.gameLoop();
