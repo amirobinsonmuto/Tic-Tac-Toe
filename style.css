@@ -1,12 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;700&family=Varela+Round&display=swap');
+
+/*custom properties*/
+:root {
+	--pink: #de5499;
+    --lightpink: #eddcc9;
+    --verylightpink: #f2ebe9;
+	--green: #264143;
+    --orange: #e99f4c;
+
+  }
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-family: 'Varela Round', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    background-color: var(--verylightpink);
+}
+
+main {
+    flex: 1;
+    background-color: var(--lightpink);
+}
+
+.container, #hide, #form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 h1 {
-    color: red;
+    color: var(--pink);
+}
+
+h2, label {
+    color: var(--green);
+}
+
+.button {
+    background-color: var(--pink);
+    border: 1px var(--pink) solid;
+    color: #fff;
+    padding: 8px;
+    border-radius: 25px;
+    width: 300px;
+}
+
+.button:hover {
+    background-color: var(--orange);
+    border: 1px var(--orange) solid;
+}
+
+#form {
+    position: absolute;
+}
+
+.form-group {
+    width: 300px;
 }
 
 #gameBoard {
     display: grid;
-    grid-template: 100px 100px 100px / 100px 100px 100px;
+    grid-template: 150px 150px 150px / 150px 150px 150px;
+}
+
+.disable {
+    pointer-events: none;
 }
 
 #gameBoard div {
-    border: 1px red solid;
+    font-size: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--pink);
+}
+
+.all {
+    border: 4px var(--green) solid;
+}
+
+.no-left {
+    border-right: 4px var(--green) solid;
+    border-top: 4px var(--green) solid;
+    border-bottom: 4px var(--green) solid;
+}
+
+.no-top-left {
+    border-right: 4px var(--green) solid;
+    border-bottom: 4px var(--green) solid;
+}
+
+.no-top {
+    border-right: 4px var(--green) solid;
+    border-left: 4px var(--green) solid;
+    border-bottom: 4px var(--green) solid;
 }
