@@ -46,9 +46,17 @@ const controller = (() => {
             ]
 
     //private functions
+    function _winPlayer() {
+        _cells.forEach((cell) => {
+            cell.style.pointerEvents = 'none';
+        })
+        _announcement.textContent = `${_currentPlayer.playerName} wins`;
+    }
+    
     function _togglePlayer () {
         (_currentPlayer == _playerA)? _currentPlayer = _playerB : _currentPlayer = _playerA;
-        _announcement.textContent = `${_currentPlayer.playerName}'s turn (Symbol: ${_currentPlayer.symbol})`
+        _announcement.textContent = 
+        `${_currentPlayer.playerName}'s turn (Symbol: ${_currentPlayer.symbol})`
     }
 
     function _checkTie () {
@@ -57,16 +65,19 @@ const controller = (() => {
         }
     }
 
-    function _winPlayer() {
-        _cells.forEach((cell) => {
-            cell.style.pointerEvents = 'none';
-        })
-        _announcement.textContent = `${_currentPlayer.playerName} wins`;
+    function _checkWinner () {
+        if(_winCombinations.filter((_winCombination) => _winCombination.includes(_index))
+                        .some((possibleCombination) => 
+                            possibleCombination.every((index) => 
+                            gameBoard.arr[index] == _currentPlayer.symbol))) {
+                    _winPlayer();
+                } else {
+                    _togglePlayer();
+                }
     }
 
 
     //public functions
-
     function startGame() {
         _playBtn.addEventListener('click', () => {
             //get input name values
@@ -77,7 +88,8 @@ const controller = (() => {
             _playerA = playerFactory(_playerAName, 'X');
             _playerB = playerFactory (_playerBName, 'O');
             _currentPlayer = _playerA;
-            _announcement.textContent = `${_playerA.playerName}'s turn (Symbol: ${_playerA.symbol})`
+            _announcement.textContent = 
+            `${_playerA.playerName}'s turn (Symbol: ${_playerA.symbol})`
 
             //display the grid
             _hide.classList.remove('d-none');
@@ -94,14 +106,7 @@ const controller = (() => {
                 e.target.style.pointerEvents = 'none';
 
                 _checkTie();
-
-                if(_winCombinations.filter((_winCombination) => _winCombination.includes(_index))
-                        .some((possibleCombination) => 
-                            possibleCombination.every((index) => gameBoard.arr[index] == _currentPlayer.symbol))) {
-                    _winPlayer();
-                } else {
-                    _togglePlayer();
-                }
+                _checkWinner();
 
             })
         })
