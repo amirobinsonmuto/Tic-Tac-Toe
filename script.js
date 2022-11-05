@@ -88,12 +88,12 @@ const controller = (() => {
 
         if(_winCombinations.filter((_winCombination) => _winCombination.includes(_index))
                         .some((possibleCombination) => 
-                            possibleCombination.every((index) => 
-                            gameBoard.arr[index] == _currentPlayer.symbol))) {
+                            possibleCombination.every((value) => 
+                            gameBoard.arr[value] == _currentPlayer.symbol))) {
                     _winPlayer();
-                } else {
-                    _togglePlayer();
-                }
+        } else {
+            _togglePlayer();
+        }
     }
 
 
