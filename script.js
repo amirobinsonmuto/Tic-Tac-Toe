@@ -127,8 +127,8 @@ const controller = (() => {
                 e.target.textContent = gameBoard.arr[_index];
                 e.target.style.pointerEvents = 'none';
 
-                _checkTie();
                 _checkWinner();
+                _checkTie();
 
             })
         })
